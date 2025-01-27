@@ -1,6 +1,6 @@
 // TODO: Create an interface for the Candidate objects returned by the API
 interface Candidate {
-    name: string;
+    login: string;
     avatar: string;
     username: string;
     location: string;
