@@ -7,9 +7,14 @@ import { searchGithubUser, searchGithub } from '../api/API';
 
 
 const CandidateSearch = () => {
-  const [arrCandidate, setArrCandidate] = useState<string []>([]);
+  const [arrCandidate, setArrCandidate] = useState<string[]>([]);
   const [candidato, setCandidato] = useState({} as Candidate);
+  const [arrCandidatosElegidos, setCandidatosElegidos] = useState<Candidate[]>([]);
   
+  useEffect(() => {
+    localStorage.setItem('items', JSON.stringify(arrCandidatosElegidos));
+  }, [arrCandidatosElegidos]);
+
   useEffect((): void => {
     const getCandidates = async () => {
       console.log("Entre a obtenerCandidatos");
@@ -21,7 +26,7 @@ const CandidateSearch = () => {
       ));
     
       const datosCandidato = await searchGithubUser(ticketResponseJSON[0].login);
-      console.log(datosCandidato);
+      //console.log(datosCandidato);
       const newCandidate: Candidate = {
         login: ticketResponseJSON[0].login,
         avatar: datosCandidato.avatar_url,
@@ -32,30 +37,58 @@ const CandidateSearch = () => {
         bio: datosCandidato.bio
       }
       setCandidato(newCandidate);
-
     }
     getCandidates();
   }, []);
 
   async function nextUser() {
     //console.log(arregloCandidatos);
-    setArrCandidate(arrCandidate.filter(candidate => candidate != candidato.login));
-    const datosCandidato = await searchGithubUser(arrCandidate[0]);
-    setCandidato({
-      login: datosCandidato.login,
-      avatar: datosCandidato.avatar_url,
-      username: datosCandidato.node_id,
-      location: datosCandidato.location,
-      email: datosCandidato.email,
-      company: datosCandidato.company,
-      bio: datosCandidato.bio
-    });
-    console.log("funcion nextUser");
-    console.log(candidato);
-    console.log(arrCandidate);
+    let filteredCandidates = arrCandidate.filter(candidate => candidate != candidato.login)
+    if (filteredCandidates.length > 0) {
+      setArrCandidate(filteredCandidates);
+      try {
+        const candidateData = await searchGithubUser(filteredCandidates[0]);
+        if (candidateData) {
+          setCandidato({
+            login: candidateData.login,
+            avatar: candidateData.avatar_url,
+            username: candidateData.node_id,
+            location: candidateData.location,
+            email: candidateData.email,
+            company: candidateData.company,
+            bio: candidateData.bio
+          });
+        }
+        
+      } catch (err) {
+        console.log("entre al error");
+        console.log(err);
+        nextUser();
+      }
+    } else {
+      setCandidato({
+        login: "No more candidates",
+        avatar: img_avatar,
+        username: "",
+        location: "",
+        email: "",
+        company: "",
+        bio: ""
+      })
+    };
   }
 
-  function nextUserandSave() {
+  async function nextUserandSave() {
+    try{
+    const candidateData = await searchGithubUser(candidato.login);
+    let newCandidate = { login: candidateData.login, avatar: candidateData.avatar_url, username: candidateData.node_id, location: candidateData.location, email: candidateData.email, company: candidateData.company, bio: candidateData.bio };
+    setCandidatosElegidos([...arrCandidatosElegidos, newCandidate]);
+    let salida = arrCandidatosElegidos;
+      console.log(salida);
+      nextUser();
+    } catch (err) {
+      nextUser();
+    }
   }
 
   return (
@@ -66,11 +99,11 @@ const CandidateSearch = () => {
       }} >
         <img src={candidato.avatar ? candidato.avatar : img_avatar} alt="Avatar" style={{ display: "block", marginLeft: "auto", marginRight: "auto", width: "50%" }} />
         <div className="container">
-          <h4><b>{candidato.login} (id: {candidato.username})</b></h4>
-          <p>Location: {candidato.location ? candidato.location : "not set by the github user"} </p>
-          <p>Email:{candidato.email ? candidato.email : "not set by the github user"}</p>
-          <p>Company:{candidato.company ? candidato.company: "not set by the github user"}</p>
-          <p>Bio:{candidato.bio ? candidato.bio : "not set by the github user"}</p>
+          <h4><b>{candidato.login} {candidato.username ?  `id: ${candidato.username}` : "" }</b></h4>
+          <p>Location: {candidato.location ? candidato.location : " not set by the github user"} </p>
+          <p>Email:{candidato.email ? candidato.email : " not set by the github user"}</p>
+          <p>Company:{candidato.company ? candidato.company: " not set by the github user"}</p>
+          <p>Bio:{candidato.bio ? candidato.bio : " not set by the github user"}</p>
 
         </div>
         <div style={{ display: "flex", justifyContent: "space-between" }}>
