@@ -12,7 +12,7 @@ const CandidateSearch = () => {
   const [arrCandidatosElegidos, setCandidatosElegidos] = useState<Candidate[]>([]);
   
   useEffect(() => {
-    localStorage.setItem('items', JSON.stringify(arrCandidatosElegidos));
+    localStorage.setItem('selectedCandidates', JSON.stringify(arrCandidatosElegidos));
   }, [arrCandidatosElegidos]);
 
   useEffect((): void => {
