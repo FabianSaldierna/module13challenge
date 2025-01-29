@@ -1,33 +1,34 @@
-# React + TypeScript + Vite
+# module13challenge
+Solved code for the module 13 challenge
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Project Link
 
-Currently, two official plugins are available:
+https://module13challenge-14b9.onrender.com
 
-* [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md), which uses [Babel](https://babeljs.io/) for Fast Refresh
-* [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc), which uses [SWC](https://swc.rs/) for Fast Refresh
+## Description
 
-## Expanding the ESLint configuration
+This project solves the challenge for Module 13 with React and Typescript. It uses react hooks (useEffect and useState) and it stores data on local memory. 
 
-If you're developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Installation
 
-* Configure the top-level `parserOptions` property as follows:
+You may need to install NPM packages:
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
+  npm i
 
-* Replace `plugin:@typescript-eslint/recommended` with `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`.
-* Optionally, add `plugin:@typescript-eslint/stylistic-type-checked`.
-* Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` and `plugin:react/jsx-runtime` to the `extends` list.
+## Usage
 
----
-© 2024 edX Boot Camps LLC. Confidential and Proprietary. All Rights Reserved.
+Run the following command: 
+  npm run dev
+(The start script runs "npm run build && node dist/index.js")
+
+## Credits
+
+Fabian Saldierna.
+
+## License
+
+An MIT standard license was used. You may refer to it from the repo.
+
+## Features
+
+Implemented React with typescript validation.
