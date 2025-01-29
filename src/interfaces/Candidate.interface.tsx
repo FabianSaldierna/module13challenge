@@ -10,4 +10,3 @@ interface Candidate {
 }
 
 export default Candidate;
-
